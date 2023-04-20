@@ -12,7 +12,7 @@ def get_chars()-> string:
     """
     all_char = ""
     count = 1
-    num = int(input("How many alphabet did u need? (lower, upper, number and special cases)"))
+    num = int(input("How many alphabet do you want? (lower, upper, number and special cases)"))
     if num >= 1 or num <= 4:
         while count <= num:
             select_alphabet=input("Which alphabet do you want? (lower, upper, number or special)")
@@ -41,7 +41,7 @@ def main()-> string:
     """
     global __ERROR__
     result = ""
-    i = 0
+    i = 1
     chars = get_chars()
     if not __ERROR__:
         pass_length = int(input("Insert the length of your password: "))
