@@ -1,5 +1,6 @@
 import random
 import string
+import pyperclip
 
 def get_chars()-> string:
     """get the all alphabets that the user select
@@ -41,7 +42,7 @@ def main()-> string:
 
 if __name__ == "__main__":
     password = main()
+    pyperclip.copy(password)
     print(f"Your password is: {password}")
 
 #TODO: graphic interface
-#TODO: auto copy password
