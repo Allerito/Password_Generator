@@ -9,3 +9,7 @@ for i in range(pass_length):
     password += random.choice(all_char)
 
 print(f"Your password is: {password}")
+
+#TODO: choices about the chars
+#TODO: graphic interface
+#TODO: auto copy password
