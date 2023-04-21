@@ -1,75 +1,69 @@
+#-----------------------------------------------------#
+#           Password Generator by Allerito            #
+#-----------------------------------------------------#
 import random
 import string
+import tkinter as tk
 import pyperclip
 
-def get_chars()-> string:
-    """get the all alphabets that the user select
+__VERSION__= "2.0.2"  # major version . minor version . patch version
 
-    :return: all alphabet selected
-    :rtype: string
-    """
+def generate_password() -> None:
+    """Password generator Function"""
 
-    all_char = ""
+    chars = ""
+    password_length = int(length_spinbox.get())
 
-    try:
-        num = int(input("How many alphabets do you want? (lower, upper, number and special cases)"))
-    except ValueError:
-        raise ValueError("Error you need to insert a number")
-    if num > 4:
-        raise ValueError("Error you can't select more than 4 alphabets")
-    elif num == 0 or num < 0:
-        raise ValueError("Error you need to select at least 1 alphabet")
-
-    elif num == 4:
-        print("You selected all alphabets")
-        all_char += string.ascii_lowercase + string.ascii_uppercase + string.digits + string.punctuation
-        return all_char
-
-    while num > 0:
-        select_alphabet=input("Which alphabet do you want? (lower, upper, number or special)")
-        select_alphabet = select_alphabet.lower()
-        
-        #! Warning: This doesn't check if the user select the same alphabet twice (will not fix since you won't be able to do it in the graphical interface)
-        if select_alphabet == "lower" or select_alphabet == "l":
-            all_char += string.ascii_lowercase
-        elif select_alphabet == "upper" or select_alphabet == "u":
-            all_char += string.ascii_uppercase
-        elif select_alphabet == "number" or select_alphabet == "n":
-            all_char += string.digits
-        elif select_alphabet == "special" or select_alphabet == "s":
-            all_char += string.punctuation
+    if include_lower_var.get():
+        chars += string.ascii_lowercase
+    if include_upper_var.get():
+        chars += string.ascii_uppercase
+    if include_digits_var.get():
+        chars += string.digits
+    if include_symbols_var.get():
+        chars += string.punctuation
+    if chars:
+        if password_length == 8 or password_length > 8 and password_length < 64 or password_length == 64:
+            password = ''.join(random.choice(chars) for i in range(password_length))
+            password_output.configure(text=password)
+            pyperclip.copy(password)
         else:
-            print("Error you didn't select a valid alphabet, please try again")
-            continue
-
-        num -= 1
-    return all_char
-
-def generatePassword(characters: string) -> string:
-    """main function
-    
-    :param characters: all the characters that the user selected
-    :type characters: string
-    :return: generated password
-    :rtype: string
-    """
-
-    result = ""
-    pass_length = int(input("Insert the length of your password: "))
-    if pass_length >= 8 or pass_length <= 64:
-        for i in range(pass_length):
-            result += random.choice(characters)
-        return result
+            password_output.configure(text="Password length need to be between 8 and 64")
     else:
-        raise ValueError("Error your password length needs to be between 8 and 64")
+        password_output.configure(text="No characters selected")
 
-if __name__ == "__main__": 
-    try:
-        characters = get_chars()
-        password = generatePassword(characters)
-        pyperclip.copy(password)
-        print(f"Your password is: {password}")
-    except ValueError as e:
-        print(e)
-        
-#TODO: graphic interface
+if __name__ == "__main__":
+    win = tk.Tk()
+    win.title(f"Password Generator {__VERSION__}")
+
+    length_label = tk.Label(win, text="Password length:")
+    length_label.pack()
+
+    length_spinbox = tk.Spinbox(win, from_=8, to=64, increment=1)
+    length_spinbox.pack()
+
+    include_lower_var = tk.BooleanVar()
+    include_lower_chk = tk.Checkbutton(win, text="Include lowercase", variable=include_lower_var)
+    include_lower_chk.pack()
+
+    include_upper_var = tk.BooleanVar()
+    include_upper_chk = tk.Checkbutton(win, text="Include uppercase", variable=include_upper_var)
+    include_upper_chk.pack()
+
+    include_digits_var = tk.BooleanVar()
+    include_digits_chk = tk.Checkbutton(win, text="Include digits", variable=include_digits_var)
+    include_digits_chk.pack()
+
+    include_symbols_var = tk.BooleanVar()
+    include_symbols_chk = tk.Checkbutton(win, text="Include symbols", variable=include_symbols_var)
+    include_symbols_chk.pack()
+
+    generate_button = tk.Button(win, text="Generate password", command=generate_password)
+    generate_button.pack()
+
+    password_output_label = tk.Label(win, text="Password:")
+    password_output_label.pack()
+
+    password_output = tk.Label(win, text="")
+    password_output.pack()
+    win.mainloop()
