@@ -2,64 +2,74 @@ import random
 import string
 import pyperclip
 
-__ERROR__ = False
-
 def get_chars()-> string:
     """get the all alphabets that the user select
 
     :return: all alphabet selected
     :rtype: string
     """
+
     all_char = ""
-    count = 1
-    num = int(input("How many alphabet do you want? (lower, upper, number and special cases)"))
-    if num >= 1 or num <= 4:
-        while count <= num:
-            select_alphabet=input("Which alphabet do you want? (lower, upper, number or special)")
-            if select_alphabet == "lower" or select_alphabet == "Lower" or select_alphabet == "LOWER" or select_alphabet == "l" or select_alphabet == "L":
-                all_char += string.ascii_lowercase
-            elif select_alphabet == "upper" or select_alphabet == "Upper" or select_alphabet == "UPPER" or select_alphabet == "u" or select_alphabet == "U":
-                all_char += string.ascii_uppercase
-            elif select_alphabet == "number" or select_alphabet == "Number" or select_alphabet == "NUMBER" or select_alphabet == "n" or select_alphabet == "N":
-                all_char += string.digits
-            elif select_alphabet == "special" or select_alphabet == "Special" or select_alphabet == "SPECIAL" or select_alphabet == "s" or select_alphabet == "S":
-                all_char += string.punctuation
-            else:
-                print("Error you didn't select a correct alphabet")
-            count+=1
+
+    try:
+        num = int(input("How many alphabets do you want? (lower, upper, number and special cases)"))
+    except ValueError:
+        raise ValueError("Error you need to insert a number")
+    if num > 4:
+        raise ValueError("Error you can't select more than 4 alphabets")
+    elif num == 0 or num < 0:
+        raise ValueError("Error you need to select at least 1 alphabet")
+
+    elif num == 4:
+        print("You selected all alphabets")
+        all_char += string.ascii_lowercase + string.ascii_uppercase + string.digits + string.punctuation
         return all_char
-    else:
-        print("Error you can't select more than 4 alphabets")
-        global __ERROR__
-        __ERROR__  = True
 
-def main()-> string:
+    while num > 0:
+        select_alphabet=input("Which alphabet do you want? (lower, upper, number or special)")
+        select_alphabet = select_alphabet.lower()
+        
+        #! Warning: This doesn't check if the user select the same alphabet twice (will not fix since you won't be able to do it in the graphical interface)
+        if select_alphabet == "lower" or select_alphabet == "l":
+            all_char += string.ascii_lowercase
+        elif select_alphabet == "upper" or select_alphabet == "u":
+            all_char += string.ascii_uppercase
+        elif select_alphabet == "number" or select_alphabet == "n":
+            all_char += string.digits
+        elif select_alphabet == "special" or select_alphabet == "s":
+            all_char += string.punctuation
+        else:
+            print("Error you didn't select a valid alphabet, please try again")
+            continue
+
+        num -= 1
+    return all_char
+
+def generatePassword(characters: string) -> string:
     """main function
-
+    
+    :param characters: all the characters that the user selected
+    :type characters: string
     :return: generated password
     :rtype: string
     """
-    global __ERROR__
-    result = ""
-    i = 1
-    chars = get_chars()
-    if not __ERROR__:
-        pass_length = int(input("Insert the length of your password: "))
-        if pass_length >= 8 or pass_length <= 64:
-            while i <= pass_length:
-                result += random.choice(chars)
-                i+=1
-            return result
-        else:
-            print("Error your password need to be length a value between 8 and 64")
-            __ERROR__ = True
 
-if __name__ == "__main__":
-    if not __ERROR__:
-        password = main()
+    result = ""
+    pass_length = int(input("Insert the length of your password: "))
+    if pass_length >= 8 or pass_length <= 64:
+        for i in range(pass_length):
+            result += random.choice(characters)
+        return result
+    else:
+        raise ValueError("Error your password length needs to be between 8 and 64")
+
+if __name__ == "__main__": 
+    try:
+        characters = get_chars()
+        password = generatePassword(characters)
         pyperclip.copy(password)
         print(f"Your password is: {password}")
-    else:
-        print("An error was occured")
-
+    except ValueError as e:
+        print(e)
+        
 #TODO: graphic interface
