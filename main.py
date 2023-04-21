@@ -47,7 +47,9 @@ def get_chars()-> string:
 
 def generatePassword(characters: string) -> string:
     """main function
-
+    
+    :param characters: all the characters that the user selected
+    :type characters: string
     :return: generated password
     :rtype: string
     """
