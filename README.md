@@ -1,6 +1,7 @@
 # Password_Generator
 A random password generator made in python
 
+-----
 ## How to use
 1- Download main.py file
 
