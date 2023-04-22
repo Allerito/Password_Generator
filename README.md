@@ -7,7 +7,7 @@ A random password generator made in python
 
 2- Check if you have python 3 on your pc (if you don't have it, go download it)
 
-3- Let's generate all the password do you want!!
+3- Let's generate all the passwords do you want!!
 
 -----
-**Maded by Allerito**
+**Made by Allerito**
