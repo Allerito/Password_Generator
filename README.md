@@ -7,7 +7,9 @@ A random password generator made in python
 
 2- Check if you have python 3 on your pc (if you don't have it, go download it)
 
-3- Let's generate all the passwords do you want!!
+3- After that open main.py and copy this command in terminal: ```pip install pyperclip```
+
+4- Let's generate all the passwords you want!!
 
 -----
 **Made by Allerito**
